@@ -25,7 +25,7 @@ function makeBoard() {
 
 /** makeHtmlBoard: make HTML table and row of column tops. and adds x coordinate to each column headers */
 
-const HTMLBoard = document.getElementById('board');
+const htmlBoard = document.getElementById('board');
 
 function makeHtmlBoard() {
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
@@ -36,7 +36,7 @@ function makeHtmlBoard() {
   top.addEventListener("click", handleClick); //adds an event listener to the new row
 
   // TODO: add comment for this code
-  for (const x = 0; x < WIDTH; x++) {
+  for (let x = 0; x < WIDTH; x++) {
     const headCell = document.createElement("td"); //creates columns
     headCell.setAttribute("id", x); //gives column headers x coordinate as id
     top.append(headCell); // adds column headers to table row
@@ -46,19 +46,22 @@ function makeHtmlBoard() {
   // dynamically creates the main part of html board
   // uses HEIGHT to create table rows
   // uses WIDTH to create table cells for each row
-  for (const y = 0; y < HEIGHT; y++) {
+  for (let y = 0; y < HEIGHT; y++) {
     // TODO: Create a table row element and assign to a "row" variable
+    const row = document.createElement('tr');
 
-    for (const x = 0; x < WIDTH; x++) {
+    for (let x = 0; x < WIDTH; x++) {
       // TODO: Create a table cell element and assign to a "cell" variable
-
+      const cell = document.createElement('td');
       // TODO: add an id, y-x, to the above table cell element
+      cell.setAttribute('id',`${y}-${x}`);
       // you'll use this later, so make sure you use y-x
 
       // TODO: append the table cell to the table row
-
+      row.append(cell);
     }
     // TODO: append the row to the html board
+    htmlBoard.append(row);
 
   }
 }
