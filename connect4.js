@@ -18,7 +18,10 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
  */
 
 function makeBoard() {
-  board = new Array(HEIGHT).fill(new Array(WIDTH).fill(null));
+  // board = new Array(HEIGHT).fill(new Array(WIDTH).fill(null));
+  for(let y = 0; y < HEIGHT; y++){
+    board.push(Array.from({length:WIDTH}).fill(null));
+  }
   console.log(board); //test to see if board worked
 }
 
@@ -64,7 +67,13 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 5
-  return 5;
+  let tempY = HEIGHT - 1;
+  while (tempY >= 0){
+    if(!board[tempY][x]){
+      return tempY;
+    }
+    tempY--;
+  }
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -77,7 +86,8 @@ function placeInTable(y, x) {
   } else if (currPlayer === 2) {
     playedPiece.classList.add("p2", "piece");
   }
-  document.getElementById(`${y}-${x}`).append(playedPiece);
+  const tile = document.getElementById(`${y}-${x}`);
+  tile.append(playedPiece);
 }
 
 /** endGame: announce game end */
@@ -89,6 +99,7 @@ function endGame(msg) {
 /** handleClick: handle click of column top to play piece */
 
 function handleClick(evt) {
+
   // get x from ID of clicked cell
   const x = +evt.target.id;
 
@@ -100,8 +111,10 @@ function handleClick(evt) {
 
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
+
   placeInTable(y, x);
     board[y][x] = currPlayer;
+
 
   // check for win
   if (checkForWin()) {
