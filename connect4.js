@@ -10,16 +10,16 @@
 const WIDTH = 7;
 const HEIGHT = 6;
 
-const currPlayer = 1; // active player: 1 or 2
-const board = []; // array of rows, each row is array of cells  (board[y][x])
+let currPlayer = 1; // active player: 1 or 2
+let board = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
 
 function makeBoard() {
-  const newBoard = new Array(HEIGHT).fill(new Array(WIDTH).fill(null));
-  // console.log(newBoard); test to see if board worked
+  board = new Array(HEIGHT).fill(new Array(WIDTH).fill(null));
+  console.log(board); //test to see if board worked
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. and adds x coordinate to each column headers */
@@ -52,8 +52,6 @@ function makeHtmlBoard() {
 
       cell.setAttribute('id',`${y}-${x}`);
       // you'll use this later, so make sure you use y-x
-
-
       row.append(cell);
     }
 
@@ -73,6 +71,13 @@ function findSpotForCol(x) {
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
+  let playedPiece = document.createElement("div")
+  if (currPlayer === 1) {
+    playedPiece.classList.add("p1", "piece");
+  } else if (currPlayer === 2) {
+    playedPiece.classList.add("p2", "piece");
+  }
+  document.getElementById(`${y}-${x}`).append(playedPiece);
 }
 
 /** endGame: announce game end */
@@ -104,9 +109,16 @@ function handleClick(evt) {
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
+  if (board.every(x => x.includes(null)) === false) {
+    console.log();
+    return endGame("It's a tie!");
+  }
+
 
   // switch players
   // TODO: switch currPlayer 1 <-> 2
+  currPlayer === 1 ? currPlayer = 2: currPlayer = 1;
+
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -128,8 +140,8 @@ function checkForWin() {
   // using HEIGHT and WIDTH, generate "check list" of coordinates
   // for 4 cells (starting here) for each of the different
   // ways to win: horizontal, vertical, diagonalDR, diagonalDL
-  for (const y = 0; y < HEIGHT; y++) {
-    for (const x = 0; x < WIDTH; x++) {
+  for (let y = 0; y < HEIGHT; y++) {
+    for (let x = 0; x < WIDTH; x++) {
       // TODO: assign values to the below variables for each of the ways to win
       // horizontal has been assigned for you
       // each should be an array of 4 cell coordinates:
