@@ -9,7 +9,6 @@
 
 const WIDTH = 7;
 const HEIGHT = 6;
-const htmlBoard = document.getElementById('board');
 
 let currPlayer = 1; // active player: 1 or 2
 let board = []; // array of rows, each row is array of cells  (board[y][x])
@@ -27,6 +26,7 @@ function makeBoard() {
 
 /** makeHtmlBoard: make HTML table and row of column tops. and adds x coordinate to each column headers */
 function makeHtmlBoard() {
+  const htmlBoard = document.getElementById('board');
 
   const top = document.createElement("tr"); //creates table row
   top.setAttribute("id", "column-top"); //sets table row id to "column-top"
@@ -82,7 +82,6 @@ function endGame(msg) {
   setTimeout(() => {
     alert(msg)
   }, 100);
-
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -101,7 +100,6 @@ function handleClick(evt) {
   placeInTable(y, x);
   board[y][x] = currPlayer;
 
-
   // check for win
   if (checkForWin()) {
     return endGame(`Player ${currPlayer} won!`);
@@ -109,7 +107,6 @@ function handleClick(evt) {
 
   // check for tie
   if (board.every(x => x.includes(null)) === false) {
-    console.log();
     return endGame("It's a tie!");
   }
 
@@ -126,24 +123,14 @@ function checkForWin() {
    * currPlayer
    */
   function _win(cells) {
-    for (let i = 0; i < cells.length; i++){
-      let cell = cells[i];
-      let y = cell[0];
-      let x = cell[1];
-
-      //check if cell is out of bounds
-      if (y < 0 || y >= HEIGHT || x < 0 || x >= WIDTH){
-        return false;
-      }
-      let firstCell = cells[0];
-      let firstVal = board[firstCell[0]][firstCell[1]];
-      let nextVal = board[y][x];
-      if(firstVal !== nextVal || firstVal === null || nextVal === null){
-        return false;
-      }
-
-    }
-    return true;
+    return cells.every(
+      ([y, x]) =>
+        y >= 0 &&
+        y < HEIGHT &&
+        x >= 0 &&
+        x < WIDTH &&
+        board[y][x] === currPlayer
+    );
    }
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
@@ -152,9 +139,9 @@ function checkForWin() {
   for (let y = 0; y < HEIGHT; y++) {
     for (let x = 0; x < WIDTH; x++) {
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      let vert = [[y,x], [y + 1, x], [y + 2, x], [y + 3, x]];
-      let diagDL = [[y,x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
-      let diagDR = [[y,x], [y + 1, x - 1], [y + 2,x - 2], [y + 3,x - 3]];
+      let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
+      let diagDL = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
+      let diagDR = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
       // find winner (only checking each win-possibility as needed)
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
