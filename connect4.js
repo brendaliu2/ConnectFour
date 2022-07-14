@@ -18,19 +18,19 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
  */
 
 function makeBoard() {
-  // board = new Array(HEIGHT).fill(new Array(WIDTH).fill(null));
-  for(let y = 0; y < HEIGHT; y++){
-    board.push(Array.from({length:WIDTH}).fill(null));
+  for (let y = 0; y < HEIGHT; y++) {
+    board.push(Array.from({ length: WIDTH }).fill(null));
   }
 }
 
-/** makeHtmlBoard: make HTML table and row of column tops. and adds x coordinate to each column headers */
+/** makeHtmlBoard: make HTML table and row of column tops.
+    and adds x coordinate to each column headers */
 function makeHtmlBoard() {
   const htmlBoard = document.getElementById('board');
 
   const top = document.createElement("tr"); //creates table row
   top.setAttribute("id", "column-top"); //sets table row id to "column-top"
-  top.addEventListener("click", handleClick); //adds an event listener to the new row
+  top.addEventListener("click", handleClick); //adds event listener to the row
 
 
   for (let x = 0; x < WIDTH; x++) {
@@ -49,7 +49,7 @@ function makeHtmlBoard() {
     for (let x = 0; x < WIDTH; x++) {
       const cell = document.createElement('td');
 
-      cell.setAttribute('id',`${y}-${x}`);
+      cell.setAttribute('id', `${y}-${x}`);
       row.append(cell);
     }
     htmlBoard.append(row);
@@ -59,8 +59,8 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return bottom empty y (null if filled) */
 function findSpotForCol(x) {
   let tempY = HEIGHT - 1;
-  while (tempY >= 0){
-    if(!board[tempY][x]){
+  while (tempY >= 0) {
+    if (!board[tempY][x]) {
       return tempY;
     }
     tempY--;
@@ -69,7 +69,7 @@ function findSpotForCol(x) {
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 function placeInTable(y, x) {
-  const playedPiece = document.createElement("div")
+  const playedPiece = document.createElement("div");
 
   playedPiece.classList.add(`p${currPlayer}`, "piece");
 
@@ -80,7 +80,7 @@ function placeInTable(y, x) {
 /** endGame: announce game end */
 function endGame(msg) {
   setTimeout(() => {
-    alert(msg)
+    alert(msg);
   }, 100);
 }
 
@@ -111,7 +111,7 @@ function handleClick(evt) {
   }
 
   // switch players
-  currPlayer === 1 ? currPlayer = 2: currPlayer = 1;
+  currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -131,7 +131,7 @@ function checkForWin() {
         x < WIDTH &&
         board[y][x] === currPlayer
     );
-   }
+  }
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
   // for 4 cells (starting here) for each of the different
