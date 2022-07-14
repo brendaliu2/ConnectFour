@@ -106,7 +106,7 @@ function handleClick(evt) {
   }
 
   // check for tie
-  if (board.every(x => x.includes(null)) === false) {
+  if (board[0].every(x => x)) {
     return endGame("It's a tie!");
   }
 
