@@ -80,7 +80,7 @@ function findSpotForCol(x) {
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
-  let playedPiece = document.createElement("div")
+  const playedPiece = document.createElement("div")
   if (currPlayer === 1) {
     playedPiece.classList.add("p1", "piece");
   } else if (currPlayer === 2) {
@@ -117,7 +117,7 @@ function handleClick(evt) {
   // TODO: add line to update in-memory board
 
   placeInTable(y, x);
-    board[y][x] = currPlayer;
+  board[y][x] = currPlayer;
 
 
   // check for win
@@ -146,9 +146,6 @@ function checkForWin() {
    * currPlayer
    */
   function _win(cells) {
-
-    // TODO: Check four cells to see if they're all legal & all color of current
-    // player
     for (let i = 0; i < cells.length; i++){
       let cell = cells[i];
 
@@ -173,11 +170,6 @@ function checkForWin() {
   // ways to win: horizontal, vertical, diagonalDR, diagonalDL
   for (let y = 0; y < HEIGHT; y++) {
     for (let x = 0; x < WIDTH; x++) {
-      // TODO: assign values to the below variables for each of the ways to win
-      // horizontal has been assigned for you
-      // each should be an array of 4 cell coordinates:
-      // [ [y, x], [y, x], [y, x], [y, x] ]
-
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
       let vert = [[y,x], [y + 1, x], [y + 2, x], [y + 3, x]];
       let diagDL = [[y,x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
