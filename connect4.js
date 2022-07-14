@@ -9,6 +9,7 @@
 
 const WIDTH = 7;
 const HEIGHT = 6;
+const htmlBoard = document.getElementById('board');
 
 let currPlayer = 1; // active player: 1 or 2
 let board = []; // array of rows, each row is array of cells  (board[y][x])
@@ -22,13 +23,9 @@ function makeBoard() {
   for(let y = 0; y < HEIGHT; y++){
     board.push(Array.from({length:WIDTH}).fill(null));
   }
-  console.log(board); //test to see if board worked
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. and adds x coordinate to each column headers */
-
-const htmlBoard = document.getElementById('board');
-
 function makeHtmlBoard() {
 
   const top = document.createElement("tr"); //creates table row
@@ -50,23 +47,17 @@ function makeHtmlBoard() {
     const row = document.createElement('tr');
 
     for (let x = 0; x < WIDTH; x++) {
-
       const cell = document.createElement('td');
 
       cell.setAttribute('id',`${y}-${x}`);
-      // you'll use this later, so make sure you use y-x
       row.append(cell);
     }
-
     htmlBoard.append(row);
-
   }
 }
 
 /** findSpotForCol: given column x, return bottom empty y (null if filled) */
-
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 5
   let tempY = HEIGHT - 1;
   while (tempY >= 0){
     if(!board[tempY][x]){
@@ -77,31 +68,24 @@ function findSpotForCol(x) {
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
-
 function placeInTable(y, x) {
-  // TODO: make a div and insert into correct table cell
   const playedPiece = document.createElement("div")
-  if (currPlayer === 1) {
-    playedPiece.classList.add("p1", "piece");
-  } else if (currPlayer === 2) {
-    playedPiece.classList.add("p2", "piece");
-  }
+
+  playedPiece.classList.add(`p${currPlayer}`, "piece");
+
   const tile = document.getElementById(`${y}-${x}`);
   tile.append(playedPiece);
 }
 
 /** endGame: announce game end */
-
 function endGame(msg) {
-  // TODO: pop up alert message
   setTimeout(() => {
     alert(msg)
-  }, 500);
+  }, 100);
 
 }
 
 /** handleClick: handle click of column top to play piece */
-
 function handleClick(evt) {
 
   // get x from ID of clicked cell
@@ -114,8 +98,6 @@ function handleClick(evt) {
   }
 
   // place piece in board and add to HTML table
-  // TODO: add line to update in-memory board
-
   placeInTable(y, x);
   board[y][x] = currPlayer;
 
@@ -133,11 +115,9 @@ function handleClick(evt) {
 
   // switch players
   currPlayer === 1 ? currPlayer = 2: currPlayer = 1;
-
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
-
 function checkForWin() {
 
   /** _win:
@@ -148,21 +128,22 @@ function checkForWin() {
   function _win(cells) {
     for (let i = 0; i < cells.length; i++){
       let cell = cells[i];
+      let y = cell[0];
+      let x = cell[1];
 
-      if (cell[0] < 0 || cell[0] >= HEIGHT || cell[1] < 0 || cell[1] >= WIDTH){
+      //check if cell is out of bounds
+      if (y < 0 || y >= HEIGHT || x < 0 || x >= WIDTH){
         return false;
       }
       let firstCell = cells[0];
       let firstVal = board[firstCell[0]][firstCell[1]];
-      let nextVal = board[cell[0]][cell[1]];
+      let nextVal = board[y][x];
       if(firstVal !== nextVal || firstVal === null || nextVal === null){
         return false;
       }
 
-
     }
     return true;
-
    }
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
